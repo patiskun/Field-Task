@@ -7,18 +7,39 @@ import type { Task } from '../types';
  * Conflict strategy: LAST-WRITE-WINS on `updatedAt`.
  */
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://10.0.2.2:3001';
+console.log('[sync] BASE_URL =', BASE_URL);
 
 async function pushTask(task: Task): Promise<void> {
-  const res = await fetch(`${BASE_URL}/tasks/${task.id}`, {
+  const url = `${BASE_URL}/tasks/${task.id}`;
+  console.log('[sync] PUT', url);
+  let res = await fetch(url, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(task),
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+  // json-server 0.17.x doesn't upsert on PUT — create via POST if missing
+  if (res.status === 404) {
+    console.log('[sync] 404, creating via POST');
+    res = await fetch(`${BASE_URL}/tasks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(task),
+    });
+  }
+
+  console.log('[sync] response', res.status, res.statusText);
+  if (!res.ok) {
+    const text = await res.text();
+    console.log('[sync] error body', text);
+    throw new Error(`HTTP ${res.status}: ${text}`);
+  }
 }
 
 async function pullAll(): Promise<Task[]> {
+  console.log('[sync] GET', `${BASE_URL}/tasks`);
   const res = await fetch(`${BASE_URL}/tasks`);
+  console.log('[sync] GET response', res.status);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
