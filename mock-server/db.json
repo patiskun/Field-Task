@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "id": "seed-1",
+      "title": "Seed: Router install",
+      "description": "Install new router on 3rd floor",
+      "dueAt": 9999999999999,
+      "location": { "address": "Nevsky 1, SPb", "latitude": 59.935, "longitude": 30.325 },
+      "attachments": [],
+      "status": "new",
+      "createdAt": 1700000000000,
+      "updatedAt": 1700000000000,
+      "syncStatus": "synced"
+    }
+  ]
+}
