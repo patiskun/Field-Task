@@ -1,27 +1,3 @@
-Candidate code: SA-RN-7431
-
-### Стек и почему
-Слой | Выбор | Почему
------|-------|-------
-Framework|Expo (SDK 51)|Быстрый APK через eas build, всё из коробки (notifications, image-picker, file-system)
-Язык|TypeScript strict|Требование ТЗ
-Стейт|Zustand + persist|Меньше бойлерплейта, чем Redux; persist через AsyncStorage — сразу закрывает офлайн
-Хранилище|AsyncStorage|Хватает под объём; SQLite был бы overkill
-Навигация|React Navigation (stack + bottom-tabs)|Стандарт
-Карта|react-native-maps|Работает в Expo Go
-Уведомления|expo-notifications|Единственный адекватный вариант
-Mock API|json-server|Требование ТЗ
-Даты|date-fns|Лёгкий
-
-
-npx json-server --watch mock-server/db.json --port 3001 --host 0.0.0.0
- На Android-emulator localhost — это сам эмулятор; используйте http://10.0.2.2:3001. На физике — IP машины. Прописать через EXPO_PUBLIC_API_URL в .env.
-
-тесты?
-Google Maps API key?
-Иконка/сплэш
-Видео 2-5 мин — по чек-листу из ТЗ. Обязательно покажи код SA-RN-7431 в кадре (в Settings) и озвучь его.
-
 # Field Tasks — RN intern test task
 
 **Candidate code: SA-RN-7431**
